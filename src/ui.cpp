@@ -49,21 +49,21 @@ void __stdcall UI::Costs::Render()
     ImGuiMCP::Text("Stamina cost per weapon type.");
     ImGuiMCP::Separator();
 
-    ImGuiMCP::SliderFloat("Default",        &Configuration::Costs::fDefault,    0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("1H Sword",       &Configuration::Costs::f1HSword,    0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("1H Axe",         &Configuration::Costs::f1HAxe,      0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("1H Mace",        &Configuration::Costs::f1HMace,     0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("Dagger",         &Configuration::Costs::f1HDagger,   0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("2H Sword",       &Configuration::Costs::f2HSword,    0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("2H Axe",         &Configuration::Costs::f2HAxe,      0.0f, 50.0f);
-    ImGuiMCP::SliderFloat("Hand to Hand",   &Configuration::Costs::fHandToHand, 0.0f, 50.0f);
+    ImGuiMCP::InputFloat("Default",                       &Configuration::Costs::fDefault,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Sword",                         &Configuration::Costs::f1HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("War Axe",                       &Configuration::Costs::f1HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Mace",                          &Configuration::Costs::f1HMace,     0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Dagger",                        &Configuration::Costs::f1HDagger,   0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Greatswords",                   &Configuration::Costs::f2HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Battleaxes & Warhammers",       &Configuration::Costs::f2HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Hand to Hand",                  &Configuration::Costs::fHandToHand, 0.0f, 0.0f, "%.1f");
 
     ImGuiMCP::Separator();
     ImGuiMCP::Text("Regen Penalty Settings");
     ImGuiMCP::Separator();
 
-    ImGuiMCP::SliderFloat("Penalty Per Fail",    &Configuration::Penalty::fRegenPenaltyPerFail, 0.0f, 10.0f);
-    ImGuiMCP::SliderInt(  "Max Failed Stacks",   &Configuration::Penalty::iMaxFailedAttacks,    1,    20);
+    ImGuiMCP::InputFloat("Penalty Per Fail (Seconds)",  &Configuration::Penalty::fRegenPenaltyPerFail, 0.0f, 0.0f, "%.2f");
+    ImGuiMCP::InputInt(  "Max Failed Stacks", &Configuration::Penalty::iMaxFailedAttacks);
 
     ImGuiMCP::Separator();
     if (ImGuiMCP::Button("Save##Costs")) {
