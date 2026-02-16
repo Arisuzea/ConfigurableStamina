@@ -60,8 +60,8 @@ target('ConfigurableStamina')
         'src',
         'includes',
         '$(projectdir)',
-        '$(projectdir)/ClibUtil',
-        '$(projectdir)/ClibUtil/detail',
+        '$(projectdir)/ClibUtil/include',
+        '$(projectdir)/ClibUtil/include/CLIBUtil/detail',
         '$(projectdir)/xbyak',
         '$(projectdir)/simpleini'
     )

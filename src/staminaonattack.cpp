@@ -1,5 +1,5 @@
 #include "staminaonattack.h"
-#include "settings.h"
+#include "configuration.h"
 
 namespace StaminaOnAttack
 {
@@ -13,12 +13,12 @@ namespace StaminaOnAttack
             weap = leftObj ? leftObj->As<RE::TESObjectWEAP>() : nullptr;
 
         if (!weap)
-            return Settings::kCost_HandToHand;
+            return Configuration::Costs::fHandToHand;
 
         // OCF keyword check first
         auto* keywordForm = weap->As<RE::BGSKeywordForm>();
         if (keywordForm) {
-            for (const auto& [keyword, cost] : Settings::kOCFCosts) {
+            for (const auto& [keyword, cost] : Configuration::Keywords::Entries) {
                 if (keywordForm->HasKeywordString(keyword)) {
                     SKSE::log::info("StaminaOnAttack: OCF keyword '{}' matched, cost = {:.2f}", keyword, cost);
                     return cost;
@@ -28,14 +28,14 @@ namespace StaminaOnAttack
 
         // Vanilla weapon type fallback
         switch (weap->GetWeaponType()) {
-        case RE::WEAPON_TYPE::kOneHandSword:    return Settings::kCost_1HSword;
-        case RE::WEAPON_TYPE::kOneHandAxe:      return Settings::kCost_1HAxe;
-        case RE::WEAPON_TYPE::kOneHandMace:     return Settings::kCost_1HMace;
-        case RE::WEAPON_TYPE::kOneHandDagger:   return Settings::kCost_1HDagger;
-        case RE::WEAPON_TYPE::kTwoHandSword:    return Settings::kCost_2HSword;
-        case RE::WEAPON_TYPE::kTwoHandAxe:      return Settings::kCost_2HAxe;
-        case RE::WEAPON_TYPE::kHandToHandMelee: return Settings::kCost_HandToHand;
-        default:                                return Settings::kCost_Default;
+        case RE::WEAPON_TYPE::kOneHandSword:    return Configuration::Costs::f1HSword;
+        case RE::WEAPON_TYPE::kOneHandAxe:      return Configuration::Costs::f1HAxe;
+        case RE::WEAPON_TYPE::kOneHandMace:     return Configuration::Costs::f1HMace;
+        case RE::WEAPON_TYPE::kOneHandDagger:   return Configuration::Costs::f1HDagger;
+        case RE::WEAPON_TYPE::kTwoHandSword:    return Configuration::Costs::f2HSword;
+        case RE::WEAPON_TYPE::kTwoHandAxe:      return Configuration::Costs::f2HAxe;
+        case RE::WEAPON_TYPE::kHandToHandMelee: return Configuration::Costs::fHandToHand;
+        default:                                return Configuration::Costs::fDefault;
         }
     }
 
@@ -51,14 +51,11 @@ namespace StaminaOnAttack
     {
         if (!a_event) return RE::BSEventNotifyControl::kContinue;
 
-        if (a_event->tag != "MCO_AttackInitiate")
+        if (a_event->tag != std::string_view(Configuration::Animation::sAttackEvent))
             return RE::BSEventNotifyControl::kContinue;
 
         auto* player = RE::PlayerCharacter::GetSingleton();
         if (!player || RE::PlayerCharacter::IsGodMode())
-            return RE::BSEventNotifyControl::kContinue;
-
-        if (!Settings::kEnableStaminaCost)
             return RE::BSEventNotifyControl::kContinue;
 
         const float cost    = GetStaminaCost(player);
@@ -68,12 +65,12 @@ namespace StaminaOnAttack
             stamina, cost, _failedAttackCount);
 
         if (stamina < cost) {
-            if (Settings::kEnableRegenPenalty) {
-                if (_failedAttackCount < Settings::kMaxFailedAttacks)
+            if (Configuration::Features::bRegenPenalty) {
+                if (_failedAttackCount < Configuration::Penalty::iMaxFailedAttacks)
                     _failedAttackCount++;
 
                 const float currentDelay = player->GetRegenDelay(RE::ActorValue::kStamina);
-                const float penalty      = Settings::kRegenPenaltyPerFail * _failedAttackCount;
+                const float penalty      = Configuration::Penalty::fRegenPenaltyPerFail * _failedAttackCount;
                 player->UpdateRegenDelay(RE::ActorValue::kStamina, currentDelay + penalty);
 
                 SKSE::log::info("StaminaOnAttack: regen penalty applied, failCount = {}, penalty = {:.2f}",
@@ -82,7 +79,7 @@ namespace StaminaOnAttack
 
             player->NotifyAnimationGraph("attackStop");
 
-            if (Settings::kEnableStaggerPunish) {
+            if (Configuration::Features::bStaggerPunishment) {
                 SKSE::log::info("StaminaOnAttack: stagger triggered.");
                 player->NotifyAnimationGraph("StaggerStart");
             }
@@ -112,11 +109,8 @@ namespace StaminaOnAttack
             return;
         }
 
-        const bool added = player->AddAnimationGraphEventSink(AnimEventSink::GetSingleton());
-        if (added) {
-            SKSE::log::info("StaminaOnAttack: sink registered.");
-        } else {
-            SKSE::log::info("StaminaOnAttack: sink already registered, skipping.");
-        }
+        player->RemoveAnimationGraphEventSink(AnimEventSink::GetSingleton());
+        player->AddAnimationGraphEventSink(AnimEventSink::GetSingleton());
+        SKSE::log::info("StaminaOnAttack: sink registered.");
     }
 }

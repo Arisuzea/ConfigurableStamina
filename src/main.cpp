@@ -1,11 +1,17 @@
 #include "pch.h"
 #include "plugin.h"
 #include "staminaonattack.h"
+#include "settings.h"
+#include "UI.h"
 
 static void SKSEMessageHandler(SKSE::MessagingInterface::Message* a_msg)
 {
     switch (a_msg->type) {
     case SKSE::MessagingInterface::kDataLoaded:
+        Settings::Load();
+        UI::Register();
+        StaminaOnAttack::RegisterSink();
+        break;
     case SKSE::MessagingInterface::kNewGame:
     case SKSE::MessagingInterface::kPostLoadGame:
         StaminaOnAttack::RegisterSink();
@@ -14,6 +20,7 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* a_msg)
         break;
     }
 }
+
 extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
     REL::Module::reset();

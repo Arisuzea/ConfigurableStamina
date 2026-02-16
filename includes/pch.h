@@ -1,5 +1,10 @@
 #pragma once
 
+#define UNICODE
+#define _UNICODE
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+
 #pragma warning(push)
 #include <RE/Skyrim.h>
 #include <REL/Relocation.h>
@@ -9,6 +14,8 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
+#include <format>
 
 #ifdef NDEBUG
 #	include <spdlog/sinks/basic_file_sink.h>
@@ -16,6 +23,8 @@
 #	include <spdlog/sinks/msvc_sink.h>
 #endif
 #pragma warning(pop)
+
+#include "configuration.h"
 
 using namespace std::literals;
 
