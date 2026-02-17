@@ -11,17 +11,16 @@ void UI::Register()
     SKSEMenuFramework::Model::Internal::key = "Configurable Stamina";
 
     SKSEMenuFramework::AddSectionItem("Features",        UI::Features::Render);
-    SKSEMenuFramework::AddSectionItem("Weapon Costs",    UI::Costs::Render);
-    SKSEMenuFramework::AddSectionItem("Keyword Costs",   UI::Keywords::Render);
+    SKSEMenuFramework::AddSectionItem("Player Costs",   UI::Costs::Render);
+    SKSEMenuFramework::AddSectionItem("NPC Costs",      UI::NPCCosts::Render);
     SKSEMenuFramework::AddSectionItem("Animation Event", UI::Animation::Render);
 
-    // Pre-populate the animation event buffer from current config
     strncpy_s(UI::Animation::EventBuffer, Configuration::Animation::sAttackEvent.c_str(), sizeof(UI::Animation::EventBuffer) - 1);
 
     SKSE::log::info("UI: registered.");
 }
 
-// ---- Features ---------------------------------------------------------------
+// ---- Features ----
 
 void __stdcall UI::Features::Render()
 {
@@ -37,53 +36,60 @@ void __stdcall UI::Features::Render()
     ImGuiMCP::TextDisabled("Delay stamina regen on failed attacks.");
 
     ImGuiMCP::Separator();
+    ImGuiMCP::Text("NPC Settings");
+    ImGuiMCP::Separator();
+
+    ImGuiMCPComponents::ToggleButton("Enable NPCs (RESTART NEEDED TO APPLY CHANGES)", &Configuration::Features::bEnableNPCs);
+    ImGuiMCP::SameLine();
+    ImGuiMCP::TextDisabled("Apply stamina cost to all NPCs.");
+
+    ImGuiMCPComponents::ToggleButton("NPC Separate Scaling", &Configuration::Features::bNPCUseSeparateScaling);
+    ImGuiMCP::SameLine();
+    ImGuiMCP::TextDisabled("Use separate cost table for NPCs.");
+
+    ImGuiMCP::Separator();
     if (ImGuiMCP::Button("Save##Features")) {
         Settings::Save();
     }
 }
 
-// ---- Costs ------------------------------------------------------------------
+// ---- Player Costs ----
 
 void __stdcall UI::Costs::Render()
 {
     ImGuiMCP::Text("Stamina cost per weapon type.");
     ImGuiMCP::Separator();
 
-    ImGuiMCP::InputFloat("Default",                       &Configuration::Costs::fDefault,    0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Sword",                         &Configuration::Costs::f1HSword,    0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("War Axe",                       &Configuration::Costs::f1HAxe,      0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Mace",                          &Configuration::Costs::f1HMace,     0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Dagger",                        &Configuration::Costs::f1HDagger,   0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Greatswords",                   &Configuration::Costs::f2HSword,    0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Battleaxes & Warhammers",       &Configuration::Costs::f2HAxe,      0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Hand to Hand",                  &Configuration::Costs::fHandToHand, 0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Default",                  &Configuration::NPCCosts::fDefault,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Sword",                    &Configuration::NPCCosts::f1HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("War Axe",                  &Configuration::NPCCosts::f1HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Mace",                     &Configuration::NPCCosts::f1HMace,     0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Dagger",                   &Configuration::NPCCosts::f1HDagger,   0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Greatswords",              &Configuration::NPCCosts::f2HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Battleaxes & Warhammers",  &Configuration::NPCCosts::f2HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Hand to Hand",             &Configuration::NPCCosts::fHandToHand, 0.0f, 0.0f, "%.1f");
 
     ImGuiMCP::Separator();
     ImGuiMCP::Text("Regen Penalty Settings");
     ImGuiMCP::Separator();
 
-    ImGuiMCP::InputFloat("Penalty Per Fail (Seconds)",  &Configuration::Penalty::fRegenPenaltyPerFail, 0.0f, 0.0f, "%.2f");
-    ImGuiMCP::InputInt(  "Max Failed Stacks", &Configuration::Penalty::iMaxFailedAttacks);
+    ImGuiMCP::InputFloat("Penalty Per Fail (Seconds)", &Configuration::Penalty::fRegenPenaltyPerFail, 0.0f, 0.0f, "%.2f");
+    ImGuiMCP::InputInt("Max Failed Stacks", &Configuration::Penalty::iMaxFailedAttacks);
 
     ImGuiMCP::Separator();
-    if (ImGuiMCP::Button("Save##Costs")) {
-        Settings::Save();
-    }
-}
-
-// ---- Keywords ---------------------------------------------------------------
-
-void __stdcall UI::Keywords::Render()
-{
-    ImGuiMCP::Text("Keyword-based stamina costs. Checked before weapon type.");
+    ImGuiMCP::Text("Keyword-based Costs");
     ImGuiMCP::Separator();
 
-    // Existing entries
+    ImGuiMCPComponents::ToggleButton("Sync with NPC", &Configuration::Keywords::bSyncWithNPC);
+    ImGuiMCP::SameLine();
+    ImGuiMCP::TextDisabled("Apply player keywords to NPCs.");
+
+    ImGuiMCP::Separator();
+
     int removeIndex = -1;
     for (int i = 0; i < static_cast<int>(Configuration::Keywords::Entries.size()); i++) {
         auto& [keyword, cost] = Configuration::Keywords::Entries[i];
 
-        // Keyword text input
         char keyBuf[128] = {};
         strncpy_s(keyBuf, keyword.c_str(), sizeof(keyBuf) - 1);
 
@@ -112,10 +118,10 @@ void __stdcall UI::Keywords::Render()
     }
 
     ImGuiMCP::Separator();
-    ImGuiMCP::Text("Add new entry:");
+    ImGuiMCP::Text("Add new keyword:");
 
     ImGuiMCP::SetNextItemWidth(300.0f);
-    ImGuiMCP::InputText("##newkw",   UI::Keywords::NewKeyword, sizeof(UI::Keywords::NewKeyword));
+    ImGuiMCP::InputText("##newkw", UI::Keywords::NewKeyword, sizeof(UI::Keywords::NewKeyword));
     ImGuiMCP::SameLine();
     ImGuiMCP::SetNextItemWidth(100.0f);
     ImGuiMCP::InputFloat("##newcost", &UI::Keywords::NewCost, 0.0f, 0.0f, "%.1f");
@@ -127,17 +133,125 @@ void __stdcall UI::Keywords::Render()
                 std::string(UI::Keywords::NewKeyword),
                 UI::Keywords::NewCost);
             UI::Keywords::NewKeyword[0] = '\0';
-            UI::Keywords::NewCost       = 10.0f;
+            UI::Keywords::NewCost = 10.0f;
         }
     }
 
     ImGuiMCP::Separator();
-    if (ImGuiMCP::Button("Save##Keywords")) {
+    if (ImGuiMCP::Button("Save##Costs")) {
         Settings::Save();
     }
 }
 
-// ---- Animation --------------------------------------------------------------
+// ---- NPC Costs ----
+
+void __stdcall UI::NPCCosts::Render()
+{
+    const bool disabled = !Configuration::Features::bNPCUseSeparateScaling;
+    
+    if (disabled) {
+        ImGuiMCP::BeginDisabled();
+        ImGuiMCP::TextDisabled("Enable 'NPC Separate Scaling' in Features to edit these values.");
+    } else {
+        ImGuiMCP::Text("NPC stamina costs (multiplied by fMultiplier).");
+    }
+    
+    ImGuiMCP::Separator();
+
+    ImGuiMCP::InputFloat("Multiplier",               &Configuration::NPCCosts::fMultiplier, 0.0f, 0.0f, "%.2f");
+    ImGuiMCP::InputFloat("Default",                  &Configuration::NPCCosts::fDefault,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Sword",                    &Configuration::NPCCosts::f1HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("War Axe",                  &Configuration::NPCCosts::f1HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Mace",                     &Configuration::NPCCosts::f1HMace,     0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Dagger",                   &Configuration::NPCCosts::f1HDagger,   0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Greatswords",              &Configuration::NPCCosts::f2HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Battleaxes & Warhammers",  &Configuration::NPCCosts::f2HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Hand to Hand",             &Configuration::NPCCosts::fHandToHand, 0.0f, 0.0f, "%.1f");
+
+    ImGuiMCP::Separator();
+    ImGuiMCP::Text("Keyword Costs");
+    ImGuiMCP::Separator();
+
+    const bool synced = Configuration::Keywords::bSyncWithNPC;
+    
+    if (synced) {
+        ImGuiMCP::BeginDisabled();
+        ImGuiMCP::TextDisabled("Using synced player keywords (read-only).");
+        ImGuiMCP::Separator();
+        
+        for (int i = 0; i < static_cast<int>(Configuration::Keywords::Entries.size()); i++) {
+            const auto& [keyword, cost] = Configuration::Keywords::Entries[i];
+            ImGuiMCP::Text("%s: %.1f", keyword.c_str(), cost);
+        }
+        
+        ImGuiMCP::EndDisabled();
+    } else {
+        ImGuiMCP::Text("NPC-specific keywords (editable).");
+        ImGuiMCP::Separator();
+        
+        int removeIndex = -1;
+        for (int i = 0; i < static_cast<int>(Configuration::Keywords::NPCEntries.size()); i++) {
+            auto& [keyword, cost] = Configuration::Keywords::NPCEntries[i];
+
+            char keyBuf[128] = {};
+            strncpy_s(keyBuf, keyword.c_str(), sizeof(keyBuf) - 1);
+
+            ImGuiMCP::PushID(i + 1000);
+
+            ImGuiMCP::SetNextItemWidth(300.0f);
+            if (ImGuiMCP::InputText("##npckw", keyBuf, sizeof(keyBuf))) {
+                keyword = keyBuf;
+            }
+
+            ImGuiMCP::SameLine();
+            ImGuiMCP::SetNextItemWidth(100.0f);
+            ImGuiMCP::InputFloat("##npccost", &cost, 0.0f, 0.0f, "%.1f");
+
+            ImGuiMCP::SameLine();
+            if (ImGuiMCP::Button("Remove")) {
+                removeIndex = i;
+            }
+
+            ImGuiMCP::PopID();
+        }
+
+        if (removeIndex >= 0) {
+            Configuration::Keywords::NPCEntries.erase(
+                Configuration::Keywords::NPCEntries.begin() + removeIndex);
+        }
+
+        ImGuiMCP::Separator();
+        ImGuiMCP::Text("Add new keyword:");
+
+        ImGuiMCP::SetNextItemWidth(300.0f);
+        ImGuiMCP::InputText("##newnpckw", UI::Keywords::NewNPCKeyword, sizeof(UI::Keywords::NewNPCKeyword));
+        ImGuiMCP::SameLine();
+        ImGuiMCP::SetNextItemWidth(100.0f);
+        ImGuiMCP::InputFloat("##newnpccost", &UI::Keywords::NewNPCCost, 0.0f, 0.0f, "%.1f");
+        ImGuiMCP::SameLine();
+
+        if (ImGuiMCP::Button("Add##NPC")) {
+            if (UI::Keywords::NewNPCKeyword[0] != '\0') {
+                Configuration::Keywords::NPCEntries.emplace_back(
+                    std::string(UI::Keywords::NewNPCKeyword),
+                    UI::Keywords::NewNPCCost);
+                UI::Keywords::NewNPCKeyword[0] = '\0';
+                UI::Keywords::NewNPCCost = 10.0f;
+            }
+        }
+    }
+
+    ImGuiMCP::Separator();
+    if (ImGuiMCP::Button("Save##NPCCosts")) {
+        Settings::Save();
+    }
+    
+    if (disabled) {
+        ImGuiMCP::EndDisabled();
+    }
+}
+
+// ---- Animation ----
 
 void __stdcall UI::Animation::Render()
 {

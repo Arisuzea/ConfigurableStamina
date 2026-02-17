@@ -2,7 +2,7 @@
 #include "plugin.h"
 #include "staminaonattack.h"
 #include "settings.h"
-#include "UI.h"
+#include "ui.h"
 
 static void SKSEMessageHandler(SKSE::MessagingInterface::Message* a_msg)
 {
@@ -10,11 +10,7 @@ static void SKSEMessageHandler(SKSE::MessagingInterface::Message* a_msg)
     case SKSE::MessagingInterface::kDataLoaded:
         Settings::Load();
         UI::Register();
-        StaminaOnAttack::RegisterSink();
-        break;
-    case SKSE::MessagingInterface::kNewGame:
-    case SKSE::MessagingInterface::kPostLoadGame:
-        StaminaOnAttack::RegisterSink();
+        StaminaOnAttack::Install();
         break;
     default:
         break;

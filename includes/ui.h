@@ -16,10 +16,19 @@ namespace UI
         void __stdcall Render();
     }
 
+    namespace NPCCosts
+    {
+        void __stdcall Render();
+    }
+
     namespace Keywords
     {
         inline char  NewKeyword[128] = {};
         inline float NewCost         = 10.0f;
+        
+        inline char  NewNPCKeyword[128] = {};
+        inline float NewNPCCost         = 10.0f;
+        
         void __stdcall Render();
     }
 
