@@ -60,5 +60,7 @@ I do not know much about compilation with C++, but this tool made it easy for me
 
 Made with [CLibDT](https://www.nexusmods.com/skyrimspecialedition/mods/154240) and [SKSE Menu Framework](https://www.nexusmods.com/skyrimspecialedition/mods/120352).
 
-[Normal Attacks Cost Stamina](https://www.nexusmods.com/skyrimspecialedition/mods/32996) - For the mod idea
-[Paragon Perks](https://www.nexusmods.com/skyrimspecialedition/mods/120398) - For the breakthrough I needed, I implemented its logic to distinct a player from NPC, saving me a day's worth of headache
+- [Normal Attacks Cost Stamina](https://www.nexusmods.com/skyrimspecialedition/mods/32996)
+  For the mod idea
+- [Paragon Perks](https://www.nexusmods.com/skyrimspecialedition/mods/120398)
+  For the breakthrough I needed, I implemented its logic to distinct a player from NPC, saving me a day's worth of headache
