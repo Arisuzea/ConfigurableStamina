@@ -23,7 +23,6 @@ namespace Configuration
         inline float f1HDagger   = 8.0f;
         inline float f2HSword    = 20.0f;
         inline float f2HAxe      = 22.0f;
-        inline float f2HMace     = 21.0f;
         inline float fHandToHand = 6.0f;
     }
 
@@ -38,7 +37,6 @@ namespace Configuration
         inline float f1HDagger   = 8.0f;
         inline float f2HSword    = 20.0f;
         inline float f2HAxe      = 22.0f;
-        inline float f2HMace     = 21.0f;
         inline float fHandToHand = 6.0f;
     }
 

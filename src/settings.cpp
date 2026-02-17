@@ -125,8 +125,8 @@ namespace Settings
         ini.SetValue("Animation", "sAttackEvent", Configuration::Animation::sAttackEvent.c_str(), nullptr);
 
         // ---- Player Keywords ----
-        ini.SetBoolValue("Keywords", "bSyncWithNPC", Configuration::Keywords::bSyncWithNPC, nullptr);
         ini.Delete("Keywords", nullptr);
+        ini.SetBoolValue("Keywords", "bSyncWithNPC", Configuration::Keywords::bSyncWithNPC, nullptr);
         
         for (int i = 0; i < static_cast<int>(Configuration::Keywords::Entries.size()); i++) {
             const auto& [keyword, cost] = Configuration::Keywords::Entries[i];

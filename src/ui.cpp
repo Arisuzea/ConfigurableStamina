@@ -59,15 +59,15 @@ void __stdcall UI::Costs::Render()
 {
     ImGuiMCP::Text("Stamina cost per weapon type.");
     ImGuiMCP::Separator();
-
-    ImGuiMCP::InputFloat("Default",                  &Configuration::NPCCosts::fDefault,    0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Sword",                    &Configuration::NPCCosts::f1HSword,    0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("War Axe",                  &Configuration::NPCCosts::f1HAxe,      0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Mace",                     &Configuration::NPCCosts::f1HMace,     0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Dagger",                   &Configuration::NPCCosts::f1HDagger,   0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Greatswords",              &Configuration::NPCCosts::f2HSword,    0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Battleaxes & Warhammers",  &Configuration::NPCCosts::f2HAxe,      0.0f, 0.0f, "%.1f");
-    ImGuiMCP::InputFloat("Hand to Hand",             &Configuration::NPCCosts::fHandToHand, 0.0f, 0.0f, "%.1f");
+    
+    ImGuiMCP::InputFloat("Default",                  &Configuration::Costs::fDefault,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Sword",                    &Configuration::Costs::f1HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("War Axe",                  &Configuration::Costs::f1HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Mace",                     &Configuration::Costs::f1HMace,     0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Dagger",                   &Configuration::Costs::f1HDagger,   0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Greatswords",              &Configuration::Costs::f2HSword,    0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Battleaxes & Warhammers",  &Configuration::Costs::f2HAxe,      0.0f, 0.0f, "%.1f");
+    ImGuiMCP::InputFloat("Hand to Hand",             &Configuration::Costs::fHandToHand, 0.0f, 0.0f, "%.1f");
 
     ImGuiMCP::Separator();
     ImGuiMCP::Text("Regen Penalty Settings");
