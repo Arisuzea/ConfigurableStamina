@@ -1,46 +1,61 @@
-# PrismaUI SKSE Plugin Template
+# Configurable Stamina
 
-This is a basic plugin template using PrismaUI and CommonLibSSE-NG.
+A lightweight SKSE plugin that adds stamina costs to normal attacks. Configure everything in-game through a clean MCM-style menu using SKSE Menu Framework.
 
-> **You can download ready-to-use plugin for MO2 here: [Download PrismaUI-Example-Plugin](https://github.com/PrismaUI-SKSE/PrismaUI-Wiki/releases)**
+Tuned by default for **MCO (Modern Combat Overhaul)**, but compatible with any combat system, including vanilla.
 
-### Requirements
-* [XMake](https://xmake.io) [2.8.2+]
-* C++23 Compiler (MSVC, Clang-CL)
+## What it does
 
-## Getting Started
-```bat
-git clone --recurse-submodules https://github.com/PrismaUI-SKSE/PrismaUI-Example-Plugin.git
+Every weapon swing deducts stamina. Run out and you face consequences. You decide the costs, the penalties, and whether NPCs follow the same rules.
+
+## Features
+
+- **Weapon-specific costs**  
+  Tune stamina drain per weapon type: daggers are light, greatswords are heavy. For modded weapons, assign costs via keywords. Works great with [Object Categorization Framework (OCF)](https://www.nexusmods.com/skyrimspecialedition/mods/68065), which covers most modded weapons out of the box.
+
+- **Stagger on failure** (toggleable)  
+  Try to attack without enough stamina and you get staggered instead. The swing cancels and you take a brief vulnerability window.
+
+- **Regen delay stacking** (toggleable)  
+  Spamming attacks on empty stamina builds up a regeneration delay. Encourages pacing and proper spacing.
+
+- **NPC support**  
+  Optionally apply the system to NPCs. Choose whether they use the same costs as the player or separate values for different tuning.
+
+- **Animation event based**  
+  Hooks into a configurable animation event to detect attacks. Defaults to `MCO_AttackInitiate` for MCO. Use `weaponSwing` for vanilla. Adjust to match your combat framework.
+
+## Requirements
+
+- [SKSE64](https://skse.silverlock.org/)
+- [SKSE Menu Framework](https://www.nexusmods.com/skyrimspecialedition/mods/120352)
+
+## Configuration
+
+Adjust settings live in-game via the SKSE Menu Framework menu. Changes save automatically to the INI file.
+
+You can also edit manually:
+
+```
+Data/SKSE/Plugins/ConfigurableStamina.ini
 ```
 
-### Build
-To build the project, run the following command:
-```bat
-xmake build
+## Compatibility
+
+- Built around MCO but works with any combat mod — just update the animation event name
+- Plays nice with mods that don't hook stamina regen directly
+- No ESP file, no load order impact
+
+## Build
+
+Clone the repository inside your current folder
+```
+git clone https://github.com/Arisuzea/ConfigurableStamina .
 ```
 
-> Don't forget to move `view/index.html` to your plugin folder in `PrismaUI/PrismaUI-Example-UI/index.html`.
+This plugin is built with [CLibDT](https://www.nexusmods.com/skyrimspecialedition/mods/154240).
+I do not know much about compilation with C++, but this tool made it easy for me.
 
-> ***Note:*** *This will generate a `build/windows/` directory in the **project's root directory** with the build output.*
+## Credits
 
-### Project Generation (Optional)
-If you want to generate a Visual Studio project, run the following command:
-```bat
-xmake project -k vsxmake
-```
-
-> ***Note:*** *This will generate a `vsxmakeXXXX/` directory in the **project's root directory** using the latest version of Visual Studio installed on the system.*
-
-### Upgrading Packages (Optional)
-If you want to upgrade the project's dependencies, run the following commands:
-```bat
-xmake repo --update
-xmake require --upgrade
-```
-
-### Build Output (Optional)
-If you want to redirect the build output, set one of or both of the following environment variables:
-
-- Path to a Skyrim install folder: `XSE_TES5_GAME_PATH`
-
-- Path to a Mod Manager mods folder: `XSE_TES5_MODS_PATH`
+Made with [CLibDT](https://www.nexusmods.com/skyrimspecialedition/mods/154240) and [SKSE Menu Framework](https://www.nexusmods.com/skyrimspecialedition/mods/120352).
