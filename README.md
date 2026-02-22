@@ -63,7 +63,7 @@ xmake f -y -m release --toolchain=msvc --skyrim_se=y --skyrim_ae=y
 xmake build
 ```
 
-SE + AE
+SE Only
 ```
 xmake f -y -m release --toolchain=msvc --skyrim_se=y
 xmake build
