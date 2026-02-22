@@ -54,7 +54,33 @@ git clone https://github.com/Arisuzea/ConfigurableStamina .
 ```
 
 This plugin is built with [CLibDT](https://www.nexusmods.com/skyrimspecialedition/mods/154240).
-I do not know much about compilation with C++, but this tool made it easy for me.
+
+But if you do not want to use it
+
+SE + AE
+```
+xmake f -y -m release --toolchain=msvc --skyrim_se=y --skyrim_ae=y
+xmake build
+```
+
+SE + AE
+```
+xmake f -y -m release --toolchain=msvc --skyrim_se=y
+xmake build
+```
+
+AE Only
+```
+xmake f -y -m release --toolchain=msvc --skyrim_ae=y
+xmake build
+```
+
+VR Only
+```
+xmake f -y -m release --toolchain=msvc --skyrim_vr=y
+xmake build
+```
+> **Note:** VR vtable offsets are unverified. The VR build exists but is untested.
 
 ## Credits
 
