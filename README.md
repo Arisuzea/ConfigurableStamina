@@ -19,7 +19,7 @@ Every weapon swing deducts stamina. Run out and you face consequences. You decid
 - **Regen delay stacking** (toggleable)  
   Spamming attacks on empty stamina builds up a regeneration delay. Encourages pacing and proper spacing.
 
-- **NPC support**  
+- **NPC support (toggleable)**  
   Optionally apply the system to NPCs. Choose whether they use the same costs as the player or separate values for different tuning.
 
 - **Animation event based**  
