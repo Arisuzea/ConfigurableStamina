@@ -8,7 +8,7 @@ namespace Configuration
 {
     namespace Features
     {
-        inline bool bStaggerPunishment     = true;
+        inline bool bStaggerPunishment     = false;
         inline bool bRegenPenalty          = true;
         inline bool bEnableNPCs            = true;
         inline bool bNPCUseSeparateScaling = false;
@@ -16,7 +16,7 @@ namespace Configuration
 
     namespace Costs
     {
-        inline float fDefault    = 15.0f;
+        inline float fDefault    = 10.0f;
         inline float f1HSword    = 12.0f;
         inline float f1HAxe      = 13.0f;
         inline float f1HMace     = 14.0f;
@@ -29,7 +29,7 @@ namespace Configuration
     namespace NPCCosts
     {
         inline float fMultiplier = 1.0f;
-        inline float fDefault    = 15.0f;
+        inline float fDefault    = 10.0f;
         inline float f1HSword    = 12.0f;
         inline float f1HAxe      = 13.0f;
         inline float f1HMace     = 14.0f;
@@ -55,7 +55,7 @@ namespace Configuration
             { "OCF_WeapTypeSpear1H",    16.0f },
             { "OCF_WeapTypeSpear2H",    23.0f },
             { "OCF_WeapTypeHalberd2H",  24.0f },
-            { "OCF_WeapTypeQtrStaff2H", 18.0f },
+            { "OCF_WeapTypeQuarterStaff2H", 18.0f },
         };
 
         inline std::vector<std::pair<std::string, float>> NPCEntries = {
@@ -64,7 +64,7 @@ namespace Configuration
             { "OCF_WeapTypeSpear1H",    16.0f },
             { "OCF_WeapTypeSpear2H",    23.0f },
             { "OCF_WeapTypeHalberd2H",  24.0f },
-            { "OCF_WeapTypeQtrStaff2H", 18.0f },
+            { "OCF_WeapTypeQuarterStaff2H", 18.0f },
         };
     }
 
@@ -73,7 +73,7 @@ namespace Configuration
         inline std::vector<std::string> AttackEvents = {
             "MCO_AttackInitiate"
         };
-        inline float fAttackCooldown = 0.3f;
+        inline float fAttackCooldown = 0.5f;
 
         inline bool bEventTrackerEnabled = false;
         inline std::vector<std::pair<std::string, std::chrono::steady_clock::time_point>> RecentEvents;
