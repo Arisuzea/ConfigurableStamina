@@ -79,7 +79,7 @@
 *    http://www.khronos.org/registry/implementers_guide.pdf
 *
 * This file should be included as
-*        #includes <KHR/khrplatform.h>
+*        #include <KHR/khrplatform.h>
 * by Khronos client API header files that use its types and defines.
 *
 * The types in khrplatform.h should only be used to define API-specific types.
@@ -352,7 +352,7 @@ typedef enum {
 * by filing a bug against product "EGL" component "Registry".
 */
 
-/*#includes <KHR/khrplatform.h>*/
+/*#include <KHR/khrplatform.h>*/
 
 /* Macros used in EGL function prototype declarations.
 *
@@ -512,7 +512,7 @@ typedef khronos_int32_t EGLint;
 /* All platform-dependent types and macro boilerplate (such as EGLAPI
 * and EGLAPIENTRY) should go in eglplatform.h.
 */
-/*#includes <EGL/eglplatform.h>*/
+/*#include <EGL/eglplatform.h>*/
 
 #ifdef __cplusplus
 extern "C" {
@@ -840,7 +840,7 @@ extern "C" {
     ** MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
     */
 
-/* #includes <EGL/eglplatform.h> */
+/* #include <EGL/eglplatform.h> */
 
     /*************************************************************/
 
@@ -1383,7 +1383,7 @@ extern "C" {
     typedef EGLBoolean(EGLAPIENTRYP PFNEGLSWAPBUFFERSWITHDAMAGEEXTPROC)(EGLDisplay dpy, EGLSurface surface, EGLint *rects, EGLint n_rects);
 #endif
 
-/* #includes <EGL/eglmesaext.h> */
+/* #include <EGL/eglmesaext.h> */
 
 #ifdef __cplusplus
 }

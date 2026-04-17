@@ -2,7 +2,7 @@ set_xmakever('3.0.1')
 includes('lib/commonlibsse-ng')
 
 set_project('Configurable Stamina on Attack')
-set_version('0.0.1')
+set_version('1.4.0')
 set_license('GPL-3.0')
 
 set_languages('c++23')

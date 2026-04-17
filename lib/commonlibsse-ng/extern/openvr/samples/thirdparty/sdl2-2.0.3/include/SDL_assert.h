@@ -48,7 +48,7 @@ assert can have unique static variables associated with it.
 */
 
 #if defined(_MSC_VER)
-/* Don't includes intrin.h here because it contains C++ code */
+/* Don't include intrin.h here because it contains C++ code */
     extern void __cdecl __debugbreak(void);
     #define SDL_TriggerBreakpoint() __debugbreak()
 #elif (defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)))

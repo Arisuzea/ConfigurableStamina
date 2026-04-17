@@ -21,7 +21,7 @@ elseif(WIN32)
   endif()
 endif()
 
-# Add includes folders.
+# Add include folders.
 include_directories(${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/headers ${CMAKE_SOURCE_DIR}/src/vrcommon)
 
 if(USE_CUSTOM_LIBCXX)

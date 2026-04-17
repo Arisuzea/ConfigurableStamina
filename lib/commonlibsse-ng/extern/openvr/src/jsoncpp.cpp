@@ -1,5 +1,5 @@
 /// Json-cpp amalgated source (http://jsoncpp.sourceforge.net/).
-/// It is intended to be used with #includes "json/json.h"
+/// It is intended to be used with #include "json/json.h"
 
 // //////////////////////////////////////////////////////////////////////
 // Beginning of content of file: LICENSE
@@ -825,7 +825,7 @@ bool Reader::decodeString(Token& token) {
 bool Reader::decodeString(Token& token, std::string& decoded) {
   decoded.reserve(token.end_ - token.start_ - 2);
   Location current = token.start_ + 1; // skip '"'
-  Location end = token.end_ - 1;       // do not includes '"'
+  Location end = token.end_ - 1;       // do not include '"'
   while (current != end) {
     Char c = *current++;
     if (c == '"')
@@ -1846,7 +1846,7 @@ bool OurReader::decodeString(Token& token) {
 bool OurReader::decodeString(Token& token, std::string& decoded) {
   decoded.reserve(token.end_ - token.start_ - 2);
   Location current = token.start_ + 1; // skip '"'
-  Location end = token.end_ - 1;       // do not includes '"'
+  Location end = token.end_ - 1;       // do not include '"'
   while (current != end) {
     Char c = *current++;
     if (c == '"')
@@ -4833,7 +4833,7 @@ void StyledStreamWriter::writeCommentBeforeValue(const Value& root) {
     *document_ << *iter;
     if (*iter == '\n' &&
        (iter != comment.end() && *(iter + 1) == '/'))
-      // writeIndent();  // would includes newline
+      // writeIndent();  // would include newline
       *document_ << indentString_;
     ++iter;
   }

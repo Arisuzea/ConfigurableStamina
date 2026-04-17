@@ -22,7 +22,7 @@
 /**
  *  \file SDL.h
  *
- *  Main includes header for the SDL library
+ *  Main include header for the SDL library
  */
 
 /**
@@ -48,7 +48,7 @@
  *  in the file "COPYING.txt".
  *
  *  The best way to learn how to use SDL is to check out the header files in
- *  the "includes" subdirectory and the programs in the "test" subdirectory.
+ *  the "include" subdirectory and the programs in the "test" subdirectory.
  *  The header files and test programs are well commented and always up to date.
  *  More documentation and FAQs are available online at:
  *      http://wiki.libsdl.org/

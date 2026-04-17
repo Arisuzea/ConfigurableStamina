@@ -32,7 +32,7 @@ class CommonLibSSE(ConanFile):
         "xbyak": False,
         "spdlog:header_only": True
     }
-    exports_sources = "CMakeLists.txt", "CMakePresets.json", "cmake/**", "includes/**", "src/**", "tests/**", \
+    exports_sources = "CMakeLists.txt", "CMakePresets.json", "cmake/**", "include/**", "src/**", "tests/**", \
                       ".clang-format", "CommonLibSSE.natvis"
 
     def requirements(self):

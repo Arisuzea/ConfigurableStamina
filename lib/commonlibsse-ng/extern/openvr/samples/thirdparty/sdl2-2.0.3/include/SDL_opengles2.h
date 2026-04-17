@@ -84,7 +84,7 @@
 *    http://www.khronos.org/registry/implementers_guide.pdf
 *
 * This file should be included as
-*        #includes <KHR/khrplatform.h>
+*        #include <KHR/khrplatform.h>
 * by Khronos client API header files that use its types and defines.
 *
 * The types in khrplatform.h should only be used to define API-specific types.
@@ -340,7 +340,7 @@ typedef enum {
  * by filing a bug against product "OpenGL-ES" component "Registry".
  */
 
-/*#includes <KHR/khrplatform.h>*/
+/*#include <KHR/khrplatform.h>*/
 
 #ifndef GL_APICALL
 #define GL_APICALL  KHRONOS_APICALL
@@ -357,7 +357,7 @@ typedef enum {
 
 /* $Revision: 16803 $ on $Date:: 2012-02-02 09:49:18 -0800 #$ */
 
-/*#includes <GLES2/gl2platform.h>*/
+/*#include <GLES2/gl2platform.h>*/
 
 #ifdef __cplusplus
 extern "C" {

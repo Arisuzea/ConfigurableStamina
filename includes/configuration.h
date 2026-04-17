@@ -2,15 +2,15 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <chrono>
 
 namespace Configuration
 {
     namespace Features
     {
-        inline bool bStaggerPunishment = true;
-        inline bool bRegenPenalty      = true;
-        
-        inline bool bEnableNPCs           = true;
+        inline bool bStaggerPunishment     = true;
+        inline bool bRegenPenalty          = true;
+        inline bool bEnableNPCs            = true;
         inline bool bNPCUseSeparateScaling = false;
     }
 
@@ -29,7 +29,6 @@ namespace Configuration
     namespace NPCCosts
     {
         inline float fMultiplier = 1.0f;
-        
         inline float fDefault    = 15.0f;
         inline float f1HSword    = 12.0f;
         inline float f1HAxe      = 13.0f;
@@ -49,7 +48,7 @@ namespace Configuration
     namespace Keywords
     {
         inline bool bSyncWithNPC = true;
-        
+
         inline std::vector<std::pair<std::string, float>> Entries = {
             { "OCF_WeapTypeKatana1H",   10.0f },
             { "OCF_WeapTypeKatana2H",   20.0f },
@@ -58,7 +57,7 @@ namespace Configuration
             { "OCF_WeapTypeHalberd2H",  24.0f },
             { "OCF_WeapTypeQtrStaff2H", 18.0f },
         };
-        
+
         inline std::vector<std::pair<std::string, float>> NPCEntries = {
             { "OCF_WeapTypeKatana1H",   10.0f },
             { "OCF_WeapTypeKatana2H",   20.0f },
@@ -71,6 +70,14 @@ namespace Configuration
 
     namespace Animation
     {
-        inline std::string sAttackEvent = "MCO_AttackInitiate";
+        inline std::vector<std::string> AttackEvents = {
+            "MCO_AttackInitiate"
+        };
+        inline float fAttackCooldown = 0.3f;
+
+        inline bool bEventTrackerEnabled = false;
+        inline std::vector<std::pair<std::string, std::chrono::steady_clock::time_point>> RecentEvents;
+        static constexpr size_t kMaxTrackedEvents = 20;
+        static constexpr float kEventTrackerTimeout = 10.0f;
     }
 }

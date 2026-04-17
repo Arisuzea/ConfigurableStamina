@@ -483,7 +483,7 @@ typedef struct SDL_SysWMmsg SDL_SysWMmsg;
  *  \brief A video driver dependent system event (event.syswm.*)
  *         This event is disabled by default, you can enable it with SDL_EventState()
  *
- *  \note If you want to use this event, you should includes SDL_syswm.h.
+ *  \note If you want to use this event, you should include SDL_syswm.h.
  */
 typedef struct SDL_SysWMEvent
 {

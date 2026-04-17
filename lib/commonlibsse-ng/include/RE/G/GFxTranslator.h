@@ -21,7 +21,7 @@ namespace RE
 		enum class TranslateCap
 		{
 			kNone = 0,
-			kReceiveHTML = 1 << 0,           // Specifies that Translate key can includes Flash-HTML tags. If not specified, translate will only receive stripped text content (default)
+			kReceiveHTML = 1 << 0,           // Specifies that Translate key can include Flash-HTML tags. If not specified, translate will only receive stripped text content (default)
 			kStripTrailingNewLines = 1 << 1  // Forces all trailing new-line symbols to be stripped before the text is passed to Translate. This is important if the original text was in HTML format, since it can have a trailing paragraph tag that is turned into a new line
 		};
 

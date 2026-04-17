@@ -10,7 +10,7 @@ def make_header(a_directory, a_filename, a_exclude):
 	with open(a_directory + "/" + a_filename, "w", encoding="utf-8") as out:
 		out.write("#pragma once\n")
 		out.write("\n")
-		out.write('#includes "SKSE/Impl/PCH.h"\n')
+		out.write('#include "SKSE/Impl/PCH.h"\n')
 		out.write("\n")
 
 		tmp = []
@@ -33,13 +33,13 @@ def make_header(a_directory, a_filename, a_exclude):
 
 		files.sort()
 		for file in files:
-			out.write('#includes "')
+			out.write('#include "')
 			out.write(file)
 			out.write('"\n')
 
 def make_cmake():
 	tmp = []
-	for directory in { "includes", "src" }:
+	for directory in { "include", "src" }:
 		for dirpath, dirnames, filenames in os.walk(directory):
 			for filename in filenames:
 				if filename.endswith(ALL_TYPES):
@@ -66,7 +66,7 @@ def main():
 	os.chdir(root)
 	make_cmake()
 
-	os.chdir(os.path.join(root, "includes"))
+	os.chdir(os.path.join(root, "include"))
 	make_header("SKSE", "SKSE.h", { "Impl" })
 	make_header("RE", "Skyrim.h", { "BSCoreTypes.h", "Offsets.h", "Offsets_NiRTTI.h", "Offsets_RTTI.h", "SFTypes.h" })
 

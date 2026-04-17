@@ -1,5 +1,5 @@
 /// Json-cpp amalgated forward header (http://jsoncpp.sourceforge.net/).
-/// It is intended to be used with #includes "json/json-forwards.h"
+/// It is intended to be used with #include "json/json-forwards.h"
 /// This header provides forward declaration for all JsonCpp types.
 
 // //////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ license you like.
 #define JSON_IS_AMALGAMATION
 
 // //////////////////////////////////////////////////////////////////////
-// Beginning of content of file: includes/json/config.h
+// Beginning of content of file: include/json/config.h
 // //////////////////////////////////////////////////////////////////////
 
 // Copyright 2007-2010 Baptiste Lepilleur
@@ -223,7 +223,7 @@ typedef UInt64 LargestUInt;
 #endif // JSON_CONFIG_H_INCLUDED
 
 // //////////////////////////////////////////////////////////////////////
-// End of content of file: includes/json/config.h
+// End of content of file: include/json/config.h
 // //////////////////////////////////////////////////////////////////////
 
 
@@ -232,7 +232,7 @@ typedef UInt64 LargestUInt;
 
 
 // //////////////////////////////////////////////////////////////////////
-// Beginning of content of file: includes/json/forwards.h
+// Beginning of content of file: include/json/forwards.h
 // //////////////////////////////////////////////////////////////////////
 
 // Copyright 2007-2010 Baptiste Lepilleur
@@ -274,7 +274,7 @@ class ValueConstIterator;
 #endif // JSON_FORWARDS_H_INCLUDED
 
 // //////////////////////////////////////////////////////////////////////
-// End of content of file: includes/json/forwards.h
+// End of content of file: include/json/forwards.h
 // //////////////////////////////////////////////////////////////////////
 
 

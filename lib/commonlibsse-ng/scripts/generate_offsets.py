@@ -159,8 +159,8 @@ def merge_vtable_data():
 
 
 def print_rtti_symbols(symbol_type: str, root: str, offsets: dict[str, RttiOffsetData]):
-    out_file = open(os.path.join(root, 'includes', 'RE', f'Offsets_{symbol_type}.h'), 'w', encoding='utf-8')
-    out_file.write('#pragma once\n\n#includes "REL/Relocation.h"\n\nnamespace RE\n{\n')
+    out_file = open(os.path.join(root, 'include', 'RE', f'Offsets_{symbol_type}.h'), 'w', encoding='utf-8')
+    out_file.write('#pragma once\n\n#include "REL/Relocation.h"\n\nnamespace RE\n{\n')
     for name, offset_data in offsets.items():
         if offset_data.ae_offset == 0 and offset_data.se_offset == 0:
             continue
@@ -177,8 +177,8 @@ def print_rtti_symbols(symbol_type: str, root: str, offsets: dict[str, RttiOffse
 
 
 def print_vtable_symbols(root: str):
-    out_file = open(os.path.join(root, 'includes', 'RE', 'Offsets_VTABLE.h'), 'w', encoding='utf-8')
-    out_file.write('#pragma once\n\n#includes "REL/Relocation.h"\n\nnamespace RE\n{\n')
+    out_file = open(os.path.join(root, 'include', 'RE', 'Offsets_VTABLE.h'), 'w', encoding='utf-8')
+    out_file.write('#pragma once\n\n#include "REL/Relocation.h"\n\nnamespace RE\n{\n')
     for name, offset_data in vtable_offsets.items():
         if not offset_data.ae_offsets and not offset_data.se_offsets:
             continue

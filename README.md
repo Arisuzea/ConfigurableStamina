@@ -1,92 +1,46 @@
-# Configurable Stamina
+# PrismaUI SKSE Plugin Template
 
-A lightweight SKSE plugin that adds stamina costs to normal attacks. Configure everything in-game through a clean MCM-style menu using SKSE Menu Framework.
+This is a basic plugin template using PrismaUI and CommonLibSSE-NG.
 
-Tuned by default for **MCO (Modern Combat Overhaul)**, but compatible with any combat system, including vanilla.
+> **You can download ready-to-use plugin for MO2 here: [Download PrismaUI-Example-Plugin](https://github.com/PrismaUI-SKSE/PrismaUI-Wiki/releases)**
 
-## What it does
+### Requirements
+* [XMake](https://xmake.io) [2.8.2+]
+* C++23 Compiler (MSVC, Clang-CL)
 
-Every weapon swing deducts stamina. Run out and you face consequences. You decide the costs, the penalties, and whether NPCs follow the same rules.
-
-## Features
-
-- **Weapon-specific costs**  
-  Tune stamina drain per weapon type: daggers are light, greatswords are heavy. For modded weapons, assign costs via keywords. Works great with [Object Categorization Framework (OCF)](https://www.nexusmods.com/skyrimspecialedition/mods/68065), which covers most modded weapons out of the box.
-
-- **Stagger on failure** (toggleable)  
-  Try to attack without enough stamina and you get staggered instead. The swing cancels and you take a brief vulnerability window.
-
-- **Regen delay stacking** (toggleable)  
-  Spamming attacks on empty stamina builds up a regeneration delay. Encourages pacing and proper spacing.
-
-- **NPC support** (toggleable)  
-  Optionally apply the system to NPCs. Choose whether they use the same costs as the player or separate values for different tuning.
-
-- **Animation event based**  
-  Hooks into a configurable animation event to detect attacks. Defaults to `MCO_AttackInitiate` for MCO. Use `weaponSwing` for vanilla. Adjust to match your combat framework.
-
-## Requirements
-
-- [SKSE64](https://skse.silverlock.org/)
-- [SKSE Menu Framework](https://www.nexusmods.com/skyrimspecialedition/mods/120352)
-
-## Configuration
-
-Adjust settings live in-game via the SKSE Menu Framework menu. Changes save automatically to the INI file.
-
-You can also edit manually:
-
-```
-Data/SKSE/Plugins/ConfigurableStamina.ini
+## Getting Started
+```bat
+git clone --recurse-submodules https://github.com/PrismaUI-SKSE/PrismaUI-Example-Plugin.git
 ```
 
-## Compatibility
-
-- Built around MCO but works with any combat mod — just update the animation event name
-- Plays nice with mods that don't hook stamina regen directly
-- No ESP file, no load order impact
-
-## Build
-
-Clone the repository inside your current folder
-```
-git clone https://github.com/Arisuzea/ConfigurableStamina .
-```
-
-This plugin is built with [CLibDT](https://www.nexusmods.com/skyrimspecialedition/mods/154240).
-
-But if you do not want to use it
-
-SE + AE
-```
-xmake f -y -m release --toolchain=msvc --skyrim_se=y --skyrim_ae=y
+### Build
+To build the project, run the following command:
+```bat
 xmake build
 ```
 
-SE Only
-```
-xmake f -y -m release --toolchain=msvc --skyrim_se=y
-xmake build
+> Don't forget to move `view/index.html` to your plugin folder in `PrismaUI/PrismaUI-Example-UI/index.html`.
+
+> ***Note:*** *This will generate a `build/windows/` directory in the **project's root directory** with the build output.*
+
+### Project Generation (Optional)
+If you want to generate a Visual Studio project, run the following command:
+```bat
+xmake project -k vsxmake
 ```
 
-AE Only
-```
-xmake f -y -m release --toolchain=msvc --skyrim_ae=y
-xmake build
+> ***Note:*** *This will generate a `vsxmakeXXXX/` directory in the **project's root directory** using the latest version of Visual Studio installed on the system.*
+
+### Upgrading Packages (Optional)
+If you want to upgrade the project's dependencies, run the following commands:
+```bat
+xmake repo --update
+xmake require --upgrade
 ```
 
-VR Only
-```
-xmake f -y -m release --toolchain=msvc --skyrim_vr=y
-xmake build
-```
-> **Note:** VR vtable offsets are unverified. The VR build exists but is untested.
+### Build Output (Optional)
+If you want to redirect the build output, set one of or both of the following environment variables:
 
-## Credits
+- Path to a Skyrim install folder: `XSE_TES5_GAME_PATH`
 
-Made with [CLibDT](https://www.nexusmods.com/skyrimspecialedition/mods/154240) and [SKSE Menu Framework](https://www.nexusmods.com/skyrimspecialedition/mods/120352).
-
-- [Normal Attacks Cost Stamina](https://www.nexusmods.com/skyrimspecialedition/mods/32996)
-  For the mod idea
-- [Paragon Perks](https://www.nexusmods.com/skyrimspecialedition/mods/120398)
-  For the breakthrough I needed, I implemented its logic to distinct a player from NPC, saving me a day's worth of headache
+- Path to a Mod Manager mods folder: `XSE_TES5_MODS_PATH`

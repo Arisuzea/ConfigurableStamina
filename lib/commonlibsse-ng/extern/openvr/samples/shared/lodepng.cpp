@@ -718,7 +718,7 @@ static unsigned append_symbol_coins(Coin* coins, const unsigned* frequencies, un
   unsigned j = 0; /*index of present symbols*/
   for(i = 0; i < numcodes; i++)
   {
-    if(frequencies[i] != 0) /*only includes symbols that are present*/
+    if(frequencies[i] != 0) /*only include symbols that are present*/
     {
       coins[j].weight = frequencies[i] / (float)sum;
       uivector_push_back(&coins[j].symbols, i);
@@ -1802,7 +1802,7 @@ static unsigned deflateDynamic(ucvector* out, size_t* bp, Hash* hash,
 
       if(bitlen_lld.data[i] == 0 && j >= 2) /*repeat code for zeroes*/
       {
-        j++; /*includes the first zero*/
+        j++; /*include the first zero*/
         if(j <= 10) /*repeat code 17 supports max 10 zeroes*/
         {
           uivector_push_back(&bitlen_lld_e, 17);
@@ -3867,7 +3867,7 @@ static unsigned unfilterScanline(unsigned char* recon, const unsigned char* scan
   unfilter a PNG image scanline by scanline. when the pixels are smaller than 1 byte,
   the filter works byte per byte (bytewidth = 1)
   precon is the previous unfiltered scanline, recon the result, scanline the current one
-  the incoming scanlines do NOT includes the filtertype byte, that one is given in the parameter filterType instead
+  the incoming scanlines do NOT include the filtertype byte, that one is given in the parameter filterType instead
   recon and scanline MAY be the same memory address! precon must be disjoint.
   */
 

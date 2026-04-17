@@ -388,7 +388,7 @@ extern "C" {
 
 /** \brief Label text for a WinRT app's privacy policy link
  *
- *  Network-enabled WinRT apps must includes a privacy policy.  On Windows 8, 8.1, and RT,
+ *  Network-enabled WinRT apps must include a privacy policy.  On Windows 8, 8.1, and RT,
  *  Microsoft mandates that this policy be available via the Windows Settings charm.
  *  SDL provides code to add a link there, with it's label text being set via the
  *  optional hint, SDL_HINT_WINRT_PRIVACY_POLICY_LABEL.

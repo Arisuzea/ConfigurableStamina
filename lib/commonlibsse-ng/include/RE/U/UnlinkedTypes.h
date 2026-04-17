@@ -211,7 +211,7 @@ namespace RE
 				BSTScrapHashMap<BSFixedString, Property*>                                  properties;             // D0
 				BSTScrapHashMap<BSFixedString, Function*>                                  staticFunctions;        // 100
 				BSTScrapHashMap<BSFixedString, Function*>                                  memberFunctions;        // 130 - Only has functions in empty state
-				BSTScrapHashMap<BSFixedString, BSTScrapHashMap<BSFixedString, Function*>*> stateMap;               // 160 - Does not includes the empty state functions
+				BSTScrapHashMap<BSFixedString, BSTScrapHashMap<BSFixedString, Function*>*> stateMap;               // 160 - Does not include the empty state functions
 				std::uint32_t                                                              totalFunctions;         // 190 - staticFunctions size + memberFunctions size + all the state function variants in stateMap
 				std::uint32_t                                                              pad_194;                // 194
 				BSTScrapHashMap<BSFixedString, ByteCode::Argument>                         initialVariableValues;  // 198

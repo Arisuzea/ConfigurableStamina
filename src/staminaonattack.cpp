@@ -1,10 +1,55 @@
 #include "staminaonattack.h"
 #include "configuration.h"
+#include <chrono>
+#include <unordered_map>
 
 namespace StaminaOnAttack
 {
-    // ---- Cost calculation ----
+    static void UpdateTracker(const RE::BSAnimationGraphEvent* a_event)
+    {
+        if (!Configuration::Animation::bEventTrackerEnabled)
+            return;
+
+        const std::string evName(a_event->tag.c_str());
+        auto& recent = Configuration::Animation::RecentEvents;
+        const auto now = std::chrono::steady_clock::now();
+
+        recent.erase(
+            std::remove_if(recent.begin(), recent.end(),
+                [&evName](const auto& p) { return p.first == evName; }),
+            recent.end());
+
+        recent.insert(recent.begin(), {evName, now});
+
+        if (recent.size() > Configuration::Animation::kMaxTrackedEvents)
+            recent.resize(Configuration::Animation::kMaxTrackedEvents);
+    }
+
+    static std::chrono::steady_clock::time_point _lastPlayerAttackTime{};
+    static std::unordered_map<
+        RE::FormID,
+        std::chrono::steady_clock::time_point> _lastNPCAttackTime;
+
+    static bool CheckAndMarkCooldown(RE::Actor* a_actor)
+    {
+        const auto  now      = std::chrono::steady_clock::now();
+        const bool  isPlayer = a_actor->IsPlayerRef();
+        auto&       stamp    = isPlayer
+            ? _lastPlayerAttackTime
+            : _lastNPCAttackTime[a_actor->GetFormID()];
+
+        const float elapsed =
+            std::chrono::duration<float>(now - stamp).count();
+
+        if (elapsed < Configuration::Animation::fAttackCooldown)
+            return false;
+
+        stamp = now;
+        return true;
+    }
+
     static int _failedAttackCount = 0;
+
     static float GetPlayerStaminaCost(RE::PlayerCharacter* a_player)
     {
         auto* rightObj = a_player->GetEquippedObject(false);
@@ -21,7 +66,9 @@ namespace StaminaOnAttack
         if (keywordForm) {
             for (const auto& [keyword, cost] : Configuration::Keywords::Entries) {
                 if (keywordForm->HasKeywordString(keyword)) {
-                    SKSE::log::info("StaminaOnAttack: keyword '{}' matched, cost = {:.2f}", keyword, cost);
+                    SKSE::log::info(
+                        "StaminaOnAttack: keyword '{}' matched, cost = {:.2f}",
+                        keyword, cost);
                     return cost;
                 }
             }
@@ -51,7 +98,9 @@ namespace StaminaOnAttack
         const bool useSeparate = Configuration::Features::bNPCUseSeparateScaling;
 
         if (!weap)
-            return useSeparate ? Configuration::NPCCosts::fHandToHand : Configuration::Costs::fHandToHand;
+            return useSeparate
+                ? Configuration::NPCCosts::fHandToHand
+                : Configuration::Costs::fHandToHand;
 
         auto* keywordForm = weap->As<RE::BGSKeywordForm>();
         if (keywordForm) {
@@ -92,48 +141,77 @@ namespace StaminaOnAttack
         }
     }
 
-    // ---- Shared event handler ----
-
     static void HandleAnimEvent(const RE::BSAnimationGraphEvent* a_event)
     {
         if (!a_event || !a_event->holder)
             return;
 
-        if (a_event->tag != std::string_view(Configuration::Animation::sAttackEvent))
+        UpdateTracker(a_event);
+
+        bool matched = false;
+        for (const auto& ev : Configuration::Animation::AttackEvents) {
+            if (a_event->tag == std::string_view(ev)) {
+                matched = true;
+                break;
+            }
+        }
+        if (!matched)
             return;
 
-        auto* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)->As<RE::Actor>();
+        auto* actor = const_cast<RE::TESObjectREFR*>(a_event->holder)
+                          ->As<RE::Actor>();
         if (!actor)
             return;
 
-        // ---- Player ----
+        if (!CheckAndMarkCooldown(actor)) {
+            SKSE::log::info(
+                "StaminaOnAttack: cooldown active for {:08X}, skipping.",
+                actor->GetFormID());
+            return;
+        }
+
         if (actor->IsPlayerRef()) {
             auto* player = RE::PlayerCharacter::GetSingleton();
             if (!player || RE::PlayerCharacter::IsGodMode())
                 return;
 
             const float cost    = GetPlayerStaminaCost(player);
-            const float stamina = player->AsActorValueOwner()->GetActorValue(RE::ActorValue::kStamina);
+            const float stamina =
+                player->AsActorValueOwner()->GetActorValue(
+                    RE::ActorValue::kStamina);
 
-            SKSE::log::info("StaminaOnAttack: stamina = {:.2f}, cost = {:.2f}, failCount = {}",
+            SKSE::log::info(
+                "StaminaOnAttack: stamina = {:.2f}, cost = {:.2f}, "
+                "failCount = {}",
                 stamina, cost, _failedAttackCount);
 
             if (stamina < cost) {
                 if (stamina > 0.0f) {
                     player->AsActorValueOwner()->RestoreActorValue(
-                        RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kStamina, -stamina);
-                    SKSE::log::info("StaminaOnAttack: player below cost, drained remaining {:.2f}", stamina);
+                        RE::ACTOR_VALUE_MODIFIER::kDamage,
+                        RE::ActorValue::kStamina, -stamina);
+                    SKSE::log::info(
+                        "StaminaOnAttack: player below cost, "
+                        "drained remaining {:.2f}",
+                        stamina);
                 }
 
                 if (Configuration::Features::bRegenPenalty) {
-                    if (_failedAttackCount < Configuration::Penalty::iMaxFailedAttacks)
+                    if (_failedAttackCount <
+                        Configuration::Penalty::iMaxFailedAttacks)
                         _failedAttackCount++;
 
-                    const float currentDelay = player->GetRegenDelay(RE::ActorValue::kStamina);
-                    const float penalty      = Configuration::Penalty::fRegenPenaltyPerFail * _failedAttackCount;
-                    player->UpdateRegenDelay(RE::ActorValue::kStamina, currentDelay + penalty);
+                    const float currentDelay =
+                        player->GetRegenDelay(RE::ActorValue::kStamina);
+                    const float penalty =
+                        Configuration::Penalty::fRegenPenaltyPerFail *
+                        _failedAttackCount;
+                    player->UpdateRegenDelay(
+                        RE::ActorValue::kStamina, currentDelay + penalty);
 
-                    SKSE::log::info("StaminaOnAttack: regen penalty applied, failCount = {}, penalty = {:.2f}",
+                    SKSE::log::info(
+                        "StaminaOnAttack: regen penalty applied, "
+                        "failCount = {}, penalty = {:.2f}",
                         _failedAttackCount, penalty);
                 }
 
@@ -148,34 +226,39 @@ namespace StaminaOnAttack
 
             _failedAttackCount = 0;
             player->AsActorValueOwner()->RestoreActorValue(
-                RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kStamina, -cost);
+                RE::ACTOR_VALUE_MODIFIER::kDamage,
+                RE::ActorValue::kStamina, -cost);
 
-            SKSE::log::info("StaminaOnAttack: player stamina drained, new = {:.2f}",
-                player->AsActorValueOwner()->GetActorValue(RE::ActorValue::kStamina));
-
+            SKSE::log::info(
+                "StaminaOnAttack: player stamina drained, new = {:.2f}",
+                player->AsActorValueOwner()->GetActorValue(
+                    RE::ActorValue::kStamina));
             return;
         }
 
-        // ---- NPC ----
         if (!Configuration::Features::bEnableNPCs)
             return;
 
         const float cost    = GetNPCStaminaCost(actor);
-        const float stamina = actor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kStamina);
+        const float stamina =
+            actor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kStamina);
 
-        SKSE::log::info("StaminaOnAttack: NPC stamina = {:.2f}, cost = {:.2f}", stamina, cost);
+        SKSE::log::info(
+            "StaminaOnAttack: NPC stamina = {:.2f}, cost = {:.2f}",
+            stamina, cost);
 
         if (stamina >= cost) {
             actor->AsActorValueOwner()->RestoreActorValue(
-                RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kStamina, -cost);
+                RE::ACTOR_VALUE_MODIFIER::kDamage,
+                RE::ActorValue::kStamina, -cost);
 
-            SKSE::log::info("StaminaOnAttack: NPC stamina drained, new = {:.2f}",
-                actor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kStamina));
+            SKSE::log::info(
+                "StaminaOnAttack: NPC stamina drained, new = {:.2f}",
+                actor->AsActorValueOwner()->GetActorValue(
+                    RE::ActorValue::kStamina));
         }
     }
 
-
-    // ---- Hooks ----
     struct CharacterHook
     {
         static RE::BSEventNotifyControl ProcessEvent(

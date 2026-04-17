@@ -25,16 +25,16 @@ namespace UI
     {
         inline char  NewKeyword[128] = {};
         inline float NewCost         = 10.0f;
-        
+
         inline char  NewNPCKeyword[128] = {};
         inline float NewNPCCost         = 10.0f;
-        
+
         void __stdcall Render();
     }
 
     namespace Animation
     {
-        inline char EventBuffer[128] = {};
+        inline char NewEventBuffer[128] = {};
         void __stdcall Render();
     }
 }

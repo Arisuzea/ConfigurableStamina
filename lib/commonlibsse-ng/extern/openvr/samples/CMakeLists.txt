@@ -186,7 +186,7 @@ endif()
 set(CMAKE_AUTOMOC ON)
 # Set CMake to handle *.ui generation to avoid using QT5_WRAP_UI() macro.
 set(CMAKE_AUTOUIC ON)
-# Add the build dir to includes paths to find UI's headers.
+# Add the build dir to include paths to find UI's headers.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Find Qt5 libraries.

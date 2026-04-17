@@ -2162,7 +2162,7 @@ struct Compositor_FrameTiming
 	/** Absolute time reference for comparing frames.  This aligns with the vsync that running start is relative to. */
 	double m_flSystemTimeInSeconds;
 
-	/** These times may includes work from other processes due to OS scheduling.
+	/** These times may include work from other processes due to OS scheduling.
 	* The fewer packets of work these are broken up into, the less likely this will happen.
 	* GPU work can be broken up by calling Flush.  This can sometimes be useful to get the GPU started
 	* processing that work earlier in the frame. */
@@ -2205,7 +2205,7 @@ struct Compositor_CumulativeStats
 	uint32_t m_nNumReprojectedFramesOnStartup;
 
 	/** Applications may explicitly fade to the compositor.  This is usually to handle level transitions, and loading often causes
-	* system wide hitches.  The following stats are collected during this period.  Does not includes values recorded during startup. */
+	* system wide hitches.  The following stats are collected during this period.  Does not include values recorded during startup. */
 	uint32_t m_nNumLoading;
 	uint32_t m_nNumFramePresentsLoading;
 	uint32_t m_nNumDroppedFramesLoading;
@@ -2213,7 +2213,7 @@ struct Compositor_CumulativeStats
 
 	/** If we don't get a new frame from the app in less than 2.5 frames, then we assume the app has hung and start
 	* fading back to the compositor.  The following stats are a result of this, and are a subset of those recorded above.
-	* Does not includes values recorded during start up or loading. */
+	* Does not include values recorded during start up or loading. */
 	uint32_t m_nNumTimedOut;
 	uint32_t m_nNumFramePresentsTimedOut;
 	uint32_t m_nNumDroppedFramesTimedOut;
@@ -3164,7 +3164,7 @@ public:
 	*  Components are useful when client application wish to draw, label, or otherwise interact with components of tracked objects.
 	*  Examples controller components:
 	*   renderable things such as triggers, buttons
-	*   non-renderable things which includes coordinate systems such as 'tip', 'base', a neutral controller agnostic hand-pose
+	*   non-renderable things which include coordinate systems such as 'tip', 'base', a neutral controller agnostic hand-pose
 	*   If all controller components are enumerated and rendered, it will be equivalent to drawing the traditional render model
 	*   Returns 0 if components not supported, >0 otherwise */
 	virtual uint32_t GetComponentCount( const char *pchRenderModelName ) = 0;
@@ -3422,7 +3422,7 @@ public:
 	* Returns the size in bytes of the buffer required to hold the specified resource. */
 	virtual uint32_t LoadSharedResource( const char *pchResourceName, char *pchBuffer, uint32_t unBufferLen ) = 0;
 
-	/** Provides the full path to the specified resource. Resource names can includes named directories for
+	/** Provides the full path to the specified resource. Resource names can include named directories for
 	* drivers and other things, and this resolves all of those and returns the actual physical path. 
 	* pchResourceTypeDirectory is the subdirectory of resources to look in. */
 	virtual uint32_t GetResourceFullPath( const char *pchResourceName, const char *pchResourceTypeDirectory, char *pchPathBuffer, uint32_t unBufferLen ) = 0;
